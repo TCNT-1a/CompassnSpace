@@ -26,11 +26,14 @@ namespace CompassnSpace
         private void Compass_ReadingChanged(object sender, CompassChangedEventArgs e)
         {
             var heading = e.Reading.HeadingMagneticNorth;
+            var roundedHeading = Math.Round(heading);
+
             MainThread.BeginInvokeOnMainThread(() =>
             {
-                _compassDrawable.Heading = (float)heading;
+                _compassDrawable.Heading = (int)roundedHeading;  
                 CompassGraphicsView.Invalidate();
-                DirectionLabel.Text = $"Direction: {heading}°";
+                DirectionLabel.Text = $"Direction: {roundedHeading}°";
+                AltitudeLabel.Text = $"Altitude: {0}m";
             });
         }
     }

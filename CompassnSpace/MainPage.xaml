@@ -19,6 +19,11 @@
             Text="Direction: "
             Style="{StaticResource SubHeadline}"
             SemanticProperties.HeadingLevel="Level2" />
+            <Label
+            x:Name="AltitudeLabel"
+            Text="Altitude: "
+            Style="{StaticResource SubHeadline}"
+            SemanticProperties.HeadingLevel="Level2" />
         </VerticalStackLayout>
     </ScrollView>
 

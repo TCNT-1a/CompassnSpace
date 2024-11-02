@@ -8,29 +8,9 @@ using System.Reflection;
 public class CompassDrawable : IDrawable
 {
     public float Heading { get; set; }
-    private Microsoft.Maui.Graphics.IImage _needleImage;
 
-    //public CompassDrawable()
-    //{
-    //    // Load the SVG image
-    //    _needleImage = LoadSvgImage("needle1.svg");
-    //}
 
-    private Microsoft.Maui.Graphics.IImage LoadSvgImage(string filename)
-    {
-        var assembly = typeof(CompassDrawable).GetTypeInfo().Assembly;
-        var resourcePath = $"CompassnSpace.Resources.Images.{filename}";
-        foreach (var resourceName in assembly.GetManifestResourceNames())
-        {
-            Console.WriteLine(resourceName);
-        }
-        using var stream = assembly.GetManifestResourceStream(resourcePath);
-        if (stream == null)
-        {
-            throw new FileNotFoundException($"SVG image not found at {resourcePath}.");
-        }
-        return PlatformImage.FromStream(stream);
-    }
+
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
@@ -69,6 +49,7 @@ public class CompassDrawable : IDrawable
         DrawNeedle(canvas, centerX, centerY, radius);
         canvas.RestoreState();
 
+
         canvas.RestoreState();
     }
 
@@ -105,4 +86,5 @@ public class CompassDrawable : IDrawable
         canvas.FillColor = Colors.Blue;
         canvas.FillPath(southNeedlePath);
     }
+   
 }
