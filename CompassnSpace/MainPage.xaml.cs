@@ -1,25 +1,37 @@
-﻿namespace CompassnSpace
+﻿using Microsoft.Maui.Controls;
+using Microsoft.Maui.Devices.Sensors;
+using Microsoft.Maui.Graphics;
+using System;
+
+namespace CompassnSpace
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+        private CompassDrawable _compassDrawable;
 
         public MainPage()
         {
             InitializeComponent();
+            _compassDrawable = new CompassDrawable();
+            CompassGraphicsView.Drawable = _compassDrawable;
+            StartCompass();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private void StartCompass()
         {
-            count++;
+            Compass.Default.ReadingChanged += Compass_ReadingChanged;
+            Compass.Default.Start(SensorSpeed.UI);
+        }
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+        private void Compass_ReadingChanged(object sender, CompassChangedEventArgs e)
+        {
+            var heading = e.Reading.HeadingMagneticNorth;
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                _compassDrawable.Heading = (float)heading;
+                CompassGraphicsView.Invalidate();
+                DirectionLabel.Text = $"Direction: {heading}°";
+            });
         }
     }
-
 }
